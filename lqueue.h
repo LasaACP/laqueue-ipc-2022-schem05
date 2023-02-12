@@ -38,5 +38,6 @@ int lq_notify (lqd_t __msgid, const struct sigevent *__notification);
 int lq_unlink (const char *__name);
 int lq_getattr (lqd_t __msgid, struct lq_attr *__mqstat);
 int lq_setattr (lqd_t __msgid, const struct lq_attr *__mqstat, struct lq_attr *__omqattr);
+int lq_timedsend(lqd_t __msgid, const char *__msg, size_t __msg_len, unsigned int __msg_prio, const struct timespec time_in);
 
 #endif /* __LQUEUE_H */

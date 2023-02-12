@@ -176,3 +176,26 @@ int lq_setattr (lqd_t __msgid, const struct lq_attr *__mqstat, struct lq_attr *_
 	return 0;
 }
 
+int lq_timedsend(lqd_t __msgid, const char *__msg, size_t __msg_len, unsigned int __msg_prio, const struct timespec time_in) {
+  struct timespec t_curr;
+  struct timespec t_final; 
+
+  t_curr = time_in;
+  clock_gettime(CLOCK_REALTIME, &t_curr);  
+
+  mylock.lock();
+  
+  clock_gettime(CLOCK_REALTIME, &t_final);
+
+  if (&t_final - &t_curr >= 1000000000) {     //if processing time is greater than 1 second, signal an error
+    return -1;
+  }
+
+	if(lqueue_table[__msgid].lq_name[0] == 0) {								
+		std::cout << "ls_send: non-queue" << std::endl;
+		return -1;
+  }
+
+  return 0;
+  
+}
